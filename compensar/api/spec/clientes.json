@@ -52,7 +52,7 @@
                 }
             ]
         },
-        "/cliente/{numDocumento}/categoriaAfiliacion/": {
+        "/cliente/{numDocumento}/categoriaAfiliacion": {
             "summary": "Categoria de Afiliación",
             "get": {
                 "responses": {
@@ -77,6 +77,85 @@
                     }
                 ],
                 "summary": "Consultar la Categoría de Afiliación de un cliente"
+            },
+            "parameters": [
+                {
+                    "name": "numDocumento",
+                    "description": "Numero de documento del cliente",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/cliente/{numDocumento}/grupoFamiliar": {
+            "summary": "Grupo Familiar",
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Familiar"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Cliente encontrado"
+                    },
+                    "404": {
+                        "description": "Cliente no Encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "clientes_api_key": [
+                        ]
+                    }
+                ],
+                "summary": "Consultar el Grupo Familiar de un cliente"
+            },
+            "parameters": [
+                {
+                    "name": "numDocumento",
+                    "description": "Numero de documento del cliente",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/cliente/{numDocumento}/datosContacto": {
+            "summary": "Datos de Contacto",
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DatosContacto"
+                                }
+                            }
+                        },
+                        "description": "Cliente encontrado"
+                    },
+                    "404": {
+                        "description": "Cliente no Encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "clientes_api_key": [
+                        ]
+                    }
+                ],
+                "summary": "Consultar los datos de contacto de un Cliente"
             },
             "parameters": [
                 {
@@ -209,6 +288,612 @@
                     }
                 },
                 "example": {
+                    "Estado": "Activo"
+                }
+            },
+            "TipoContacto": {
+                "title": "Root Type for TipoContacto",
+                "description": "TipoContacto",
+                "type": "object",
+                "properties": {
+                    "CodigoTipoContacto": {
+                        "description": " Código del Tipo de la relación de contacto",
+                        "type": "string"
+                    },
+                    "NombreTipoContacto": {
+                        "description": " Nomnre del Tipo de la relación de contacto",
+                        "type": "string"
+                    },
+                    "FechaInicioVigencia": {
+                        "format": "date",
+                        "description": "Fecha inicio vigencia",
+                        "type": "string"
+                    },
+                    "FechaFinVigencia": {
+                        "format": "date",
+                        "description": "Fecha fin vigencia",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "IdTipoContacto": "",
+                    "CodigoTipoContacto": "",
+                    "NombreTipoContacto": "",
+                    "FechaInicioVigencia": "",
+                    "FechaFinVigencia": ""
+                }
+            },
+            "Telefono": {
+                "title": "Root Type for Telefono",
+                "description": "Telefono",
+                "type": "object",
+                "properties": {
+                    "Numero": {
+                        "description": "Numero de telefono",
+                        "type": "integer"
+                    },
+                    "Tipo": {
+                        "description": "Tipo de telefono",
+                        "type": "string"
+                    },
+                    "FechaInicioVigencia": {
+                        "format": "date",
+                        "description": "Fecha Inicio de Vigencia del Telefono",
+                        "type": "string"
+                    },
+                    "FechaFinVigencia": {
+                        "format": "date",
+                        "description": "Fecha Fin de Vigencia",
+                        "type": "string"
+                    },
+                    "Optin": {
+                        "description": "Optin",
+                        "type": "integer"
+                    },
+                    "TipoContacto": {
+                        "$ref": "#/components/schemas/TipoContacto",
+                        "description": "Relación de tipo de contacto",
+                        "properties": {
+                            "IdTipoContacto": {
+                                "type": "string"
+                            },
+                            "CodigoTipoContacto": {
+                                "type": "string"
+                            },
+                            "NombreTipoContacto": {
+                                "type": "string"
+                            },
+                            "FechaInicioVigencia": {
+                                "type": "string"
+                            },
+                            "FechaFinVigencia": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "example": {
+                    "Numero": "3656942",
+                    "Tipo": "Residencial",
+                    "IdTipoNumero": "1",
+                    "FechaInicioVigencia": "2000-01-01",
+                    "FechaFinVigencia": "",
+                    "Optin": "1",
+                    "TipoContacto": {
+                        "IdTipoContacto": "",
+                        "CodigoTipoContacto": "",
+                        "NombreTipoContacto": "",
+                        "FechaInicioVigencia": "",
+                        "FechaFinVigencia": ""
+                    }
+                }
+            },
+            "Correo": {
+                "title": "Root Type for Correo",
+                "description": "Correo Electronico",
+                "required": [
+                ],
+                "type": "object",
+                "properties": {
+                    "CorreoElectronico": {
+                        "description": "Correo electronico cliente",
+                        "type": "string"
+                    },
+                    "FechaInicioVigencia": {
+                        "format": "date",
+                        "description": "Fecha inicio vigencia",
+                        "type": "string"
+                    },
+                    "FechaFinVigencia": {
+                        "format": "date",
+                        "description": "Fecha fin vigencia",
+                        "type": "string"
+                    },
+                    "Optin": {
+                        "description": "Optin",
+                        "type": "integer"
+                    },
+                    "Tipo": {
+                        "description": "Tipo de Correo, Personal",
+                        "type": "string"
+                    },
+                    "TipoContacto": {
+                        "$ref": "#/components/schemas/TipoContacto",
+                        "description": "Relación de tipo de contacto",
+                        "properties": {
+                            "CodigoTipoContacto": {
+                                "type": "string"
+                            },
+                            "NombreTipoContacto": {
+                                "type": "string"
+                            },
+                            "FechaInicioVigencia": {
+                                "type": "string"
+                            },
+                            "FechaFinVigencia": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "example": {
+                    "CorreoElectronico": "mail@gmail.com",
+                    "FechaInicioVigencia": "2000-01-01",
+                    "FechaFinVigencia": "",
+                    "Optin": "1",
+                    "Tipo": "Personal",
+                    "TipoContacto": {
+                        "CodigoTipoContacto": "",
+                        "NombreTipoContacto": "",
+                        "FechaInicioVigencia": "",
+                        "FechaFinVigencia": ""
+                    }
+                }
+            },
+            "Localizacion": {
+                "title": "Root Type for Localizacion",
+                "description": "Datos de localización de la dirección",
+                "type": "object",
+                "properties": {
+                    "Municipio": {
+                        "type": "object",
+                        "properties": {
+                            "Codigo": {
+                                "type": "string"
+                            },
+                            "Nombre": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Departamento": {
+                        "type": "object",
+                        "properties": {
+                            "Codigo": {
+                                "type": "string"
+                            },
+                            "Nombre": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Localidad": {
+                        "type": "object",
+                        "properties": {
+                            "Codigo": {
+                                "type": "string"
+                            },
+                            "Nombre": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "UPZ": {
+                        "type": "object",
+                        "properties": {
+                            "Codigo": {
+                                "type": "string"
+                            },
+                            "Nombre": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "CodigoPostal": {
+                        "type": "string"
+                    },
+                    "Barrio": {
+                        "type": "string"
+                    },
+                    "TipoAreaGeografica": {
+                        "type": "string"
+                    },
+                    "Longitud": {
+                        "type": "string"
+                    },
+                    "Latitud": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "Municipio": {
+                        "Codigo": "1",
+                        "Nombre": "Bogota"
+                    },
+                    "Departamento": {
+                        "Codigo": "1",
+                        "Nombre": "Cundinamarca"
+                    },
+                    "Localidad": {
+                        "Codigo": "",
+                        "Nombre": ""
+                    },
+                    "UPZ": {
+                        "Codigo": "",
+                        "Nombre": ""
+                    },
+                    "CodigoPostal": "1101",
+                    "Barrio": "Libertadores",
+                    "TipoAreaGeografica": "U",
+                    "Longitud": "",
+                    "Latitud": ""
+                }
+            },
+            "Direccion": {
+                "title": "Root Type for Direccion",
+                "description": "Direccion",
+                "type": "object",
+                "properties": {
+                    "Direccion": {
+                        "description": "Dirección",
+                        "type": "string"
+                    },
+                    "Optin": {
+                        "description": "Optin",
+                        "type": "integer"
+                    },
+                    "FechaInicioVigencia": {
+                        "format": "date",
+                        "description": "Fecha Inicio Vigencia",
+                        "type": "string"
+                    },
+                    "FechaVinVigencia": {
+                        "format": "date",
+                        "description": "Fecha Fin Vigencia",
+                        "type": "string"
+                    },
+                    "Estrato": {
+                        "description": "Estrato",
+                        "type": "integer"
+                    },
+                    "Tipo": {
+                        "description": "Tipo de direccion, Residencial",
+                        "type": "string"
+                    },
+                    "Localizacion": {
+                        "$ref": "#/components/schemas/Localizacion",
+                        "description": "Localizacion de la direccion",
+                        "properties": {
+                            "Municipio": {
+                                "type": "object",
+                                "properties": {
+                                    "Codigo": {
+                                        "type": "string"
+                                    },
+                                    "Nombre": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "Departamento": {
+                                "type": "object",
+                                "properties": {
+                                    "Codigo": {
+                                        "type": "string"
+                                    },
+                                    "Nombre": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "Localidad": {
+                                "type": "object",
+                                "properties": {
+                                    "Codigo": {
+                                        "type": "string"
+                                    },
+                                    "Nombre": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "UPZ": {
+                                "type": "object",
+                                "properties": {
+                                    "Codigo": {
+                                        "type": "string"
+                                    },
+                                    "Nombre": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "CodigoPostal": {
+                                "type": "string"
+                            },
+                            "Barrio": {
+                                "type": "string"
+                            },
+                            "TipoAreaGeografica": {
+                                "type": "string"
+                            },
+                            "Longitud": {
+                                "type": "string"
+                            },
+                            "Latitud": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "TipoContacto": {
+                        "$ref": "#/components/schemas/TipoContacto",
+                        "description": "Tipo de Contacto"
+                    }
+                },
+                "example": {
+                    "Direccion": "TV 14C ESTE # 55 - 85",
+                    "Optin": "1",
+                    "FechaInicioVigencia": "2000-01-01",
+                    "FechaVinVigencia": "",
+                    "Estrato": "3",
+                    "Tipo": "Residencial",
+                    "Localizacion": {
+                        "Municipio": {
+                            "Codigo": "1",
+                            "Nombre": "Bogota"
+                        },
+                        "Departamento": {
+                            "Codigo": "1",
+                            "Nombre": "Cundinamarca"
+                        },
+                        "Localidad": {
+                            "Codigo": "",
+                            "Nombre": ""
+                        },
+                        "UPZ": {
+                            "Codigo": "",
+                            "Nombre": ""
+                        },
+                        "CodigoPostal": "1101",
+                        "Barrio": "Libertadores",
+                        "TipoAreaGeografica": "U",
+                        "Longitud": "",
+                        "Latitud": ""
+                    },
+                    "TipoContacto": {
+                        "CodigoTipoContacto": "",
+                        "FechaFinVigencia": "",
+                        "FechaInicioVigencia": "",
+                        "NombreTipoContacto": ""
+                    }
+                }
+            },
+            "DatosContacto": {
+                "title": "Root Type for DatosContacto",
+                "description": "Datos de Contacto del Cliente, Telefono, Direccion y Correo Electronico",
+                "type": "object",
+                "properties": {
+                    "Correos": {
+                        "description": "Lista de Correos Electronicos del Cliente",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Correo"
+                        }
+                    },
+                    "Direcciones": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Direccion"
+                        }
+                    },
+                    "Telefonos": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Telefono"
+                        }
+                    }
+                },
+                "example": {
+                    "Correos": [
+                        {
+                            "CorreoElectronico": "mail@gmail.com",
+                            "FechaFinVigencia": "",
+                            "FechaInicioVigencia": "2000-01-01",
+                            "Optin": "1",
+                            "Tipo": "Personal",
+                            "TipoContacto": {
+                                "CodigoTipoContacto": "",
+                                "FechaFinVigencia": "",
+                                "FechaInicioVigencia": "",
+                                "NombreTipoContacto": ""
+                            }
+                        },
+                        {
+                            "CorreoElectronico": "mail2@gmail.com",
+                            "FechaFinVigencia": "",
+                            "FechaInicioVigencia": "2000-01-01",
+                            "Optin": "1",
+                            "Tipo": "Personal",
+                            "TipoContacto": {
+                                "CodigoTipoContacto": "",
+                                "FechaFinVigencia": "",
+                                "FechaInicioVigencia": "",
+                                "NombreTipoContacto": ""
+                            }
+                        }
+                    ],
+                    "Direcciones": [
+                        {
+                            "Direccion": "TV 14C ESTE # 55 - 85",
+                            "Estrato": "3",
+                            "FechaInicioVigencia": "2000-01-01",
+                            "FechaVinVigencia": "",
+                            "Localizacion": {
+                                "Barrio": "Libertadores",
+                                "CodigoPostal": "1101",
+                                "Departamento": {
+                                    "Codigo": "1",
+                                    "Nombre": "Cundinamarca"
+                                },
+                                "Latitud": "",
+                                "Localidad": {
+                                    "Codigo": "",
+                                    "Nombre": ""
+                                },
+                                "Longitud": "",
+                                "Municipio": {
+                                    "Codigo": "1",
+                                    "Nombre": "Bogota"
+                                },
+                                "TipoAreaGeografica": "U",
+                                "UPZ": {
+                                    "Codigo": "",
+                                    "Nombre": ""
+                                }
+                            },
+                            "Optin": "1",
+                            "Tipo": "Residencial",
+                            "TipoContacto": {
+                                "CodigoTipoContacto": "",
+                                "FechaFinVigencia": "",
+                                "FechaInicioVigencia": "",
+                                "NombreTipoContacto": ""
+                            }
+                        },
+                        {
+                            "Direccion": "TV 15C ESTE # 55 - 85",
+                            "Estrato": "3",
+                            "FechaInicioVigencia": "2000-01-01",
+                            "FechaVinVigencia": "",
+                            "Localizacion": {
+                                "Barrio": "Libertadores",
+                                "CodigoPostal": "1101",
+                                "Departamento": {
+                                    "Codigo": "1",
+                                    "Nombre": "Cundinamarca"
+                                },
+                                "Latitud": "",
+                                "Localidad": {
+                                    "Codigo": "",
+                                    "Nombre": ""
+                                },
+                                "Longitud": "",
+                                "Municipio": {
+                                    "Codigo": "1",
+                                    "Nombre": "Bogota"
+                                },
+                                "TipoAreaGeografica": "U",
+                                "UPZ": {
+                                    "Codigo": "",
+                                    "Nombre": ""
+                                }
+                            },
+                            "Optin": "1",
+                            "Tipo": "Residencial",
+                            "TipoContacto": {
+                                "CodigoTipoContacto": "",
+                                "FechaFinVigencia": "",
+                                "FechaInicioVigencia": "",
+                                "NombreTipoContacto": ""
+                            }
+                        }
+                    ],
+                    "Telefonos": [
+                        {
+                            "FechaFinVigencia": "",
+                            "FechaInicioVigencia": "2000-01-01",
+                            "Numero": "3656942",
+                            "Optin": "1",
+                            "Tipo": "Residencial",
+                            "TipoContacto": {
+                                "CodigoTipoContacto": "",
+                                "FechaFinVigencia": "",
+                                "FechaInicioVigencia": "",
+                                "NombreTipoContacto": ""
+                            }
+                        },
+                        {
+                            "FechaFinVigencia": "",
+                            "FechaInicioVigencia": "2000-01-01",
+                            "Numero": "3656943",
+                            "Optin": "1",
+                            "Tipo": "Residencial",
+                            "TipoContacto": {
+                                "CodigoTipoContacto": "",
+                                "FechaFinVigencia": "",
+                                "FechaInicioVigencia": "",
+                                "NombreTipoContacto": ""
+                            }
+                        }
+                    ]
+                }
+            },
+            "Familiar": {
+                "title": "Root Type for Familiar",
+                "description": "Familiar",
+                "type": "object",
+                "properties": {
+                    "TipoIdentificacion": {
+                        "description": "Tipo de identificacion",
+                        "type": "string"
+                    },
+                    "NumeroIdentificacion": {
+                        "description": "Numero de identificacion",
+                        "type": "string"
+                    },
+                    "PrimerNombre": {
+                        "description": "Primer nombre",
+                        "type": "string"
+                    },
+                    "SegundoNombre": {
+                        "description": "Segundo nombre",
+                        "type": "string"
+                    },
+                    "PrimerApellido": {
+                        "description": "Primer apellido",
+                        "type": "string"
+                    },
+                    "SegundoApellido": {
+                        "description": "Segundo apellido",
+                        "type": "string"
+                    },
+                    "Edad": {
+                        "description": "Edad",
+                        "type": "integer"
+                    },
+                    "Categoria": {
+                        "description": "Categoria de afiliacion",
+                        "type": "string"
+                    },
+                    "Parentesco": {
+                        "description": "Parentesco",
+                        "type": "string"
+                    },
+                    "Estado": {
+                        "description": "Estado de afiliacion",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "TipoIdentificacion": "1",
+                    "NumeroIdentificacion": "23123123",
+                    "PrimerNombre": "Juan",
+                    "SegundoNombre": "Daniel",
+                    "PrimerApellido": "Perez",
+                    "SegundoApellido": "Gomez",
+                    "Edad": "17",
+                    "Categoria": "C",
+                    "Parentesco": "Hijo",
                     "Estado": "Activo"
                 }
             }
