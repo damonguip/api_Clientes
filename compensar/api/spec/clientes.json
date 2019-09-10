@@ -1,0 +1,230 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Clientes",
+        "version": "1.0.0",
+        "description": "API Clientes de Compensar",
+        "contact": {
+            "name": "Diego Mongui",
+            "email": "damonguip@compensar.com"
+        },
+        "license": {
+            "name": "GNU AGPLv3",
+            "url": "https://www.gnu.org/licenses/agpl.txt"
+        }
+    },
+    "paths": {
+        "/cliente/{numDocumento}/estadoAfiliacion": {
+            "summary": "Estado de Afiliación",
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EstadoAfiliacion"
+                                }
+                            }
+                        },
+                        "description": "Cliente encontrado"
+                    },
+                    "404": {
+                        "description": "Cliente no Encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "clientes_api_key": [
+                        ]
+                    }
+                ],
+                "summary": "Consultar el Estado de Afiliación de un cliente"
+            },
+            "parameters": [
+                {
+                    "name": "numDocumento",
+                    "description": "Numero de documento del cliente",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/cliente/{numDocumento}/categoriaAfiliacion/": {
+            "summary": "Categoria de Afiliación",
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoriaAfiliacion"
+                                }
+                            }
+                        },
+                        "description": "Cliente encontrado"
+                    },
+                    "404": {
+                        "description": "Cliente no Encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "clientes_api_key": [
+                        ]
+                    }
+                ],
+                "summary": "Consultar la Categoría de Afiliación de un cliente"
+            },
+            "parameters": [
+                {
+                    "name": "numDocumento",
+                    "description": "Numero de documento del cliente",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        }
+    },
+    "components": {
+        "schemas": {
+            "Cliente": {
+                "title": "Root Type for Cliente",
+                "description": "Cliente",
+                "type": "object",
+                "properties": {
+                    "IdCliente": {
+                        "type": "string"
+                    },
+                    "Identificación": {
+                        "$ref": "#/components/schemas/Identificacion",
+                        "description": "Identificacion del Cliente",
+                        "properties": {
+                            "TipoDocumento": {
+                                "type": "string"
+                            },
+                            "NumIdentificacion": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "CategoriaAfiliacion": {
+                        "description": "Categoria de Afiliacion del Cliente",
+                        "type": "string"
+                    },
+                    "EstadoAfiliacion": {
+                        "description": "Estado de Afiliacion del Cliente",
+                        "type": "boolean"
+                    },
+                    "TipoCliente": {
+                        "$ref": "#/components/schemas/TipoCliente",
+                        "description": "Tipo de Cliente",
+                        "properties": {
+                            "Codigo": {
+                                "type": "string"
+                            },
+                            "Nombre": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "example": {
+                    "IdCliente": "",
+                    "Identificación": {
+                        "TipoDocumento": "",
+                        "NumIdentificacion": ""
+                    },
+                    "TipoPersona": {
+                        "Codigo": "",
+                        "Nombre": ""
+                    },
+                    "CategoriaAfiliacion": "",
+                    "EstadoAfiliacion": ""
+                }
+            },
+            "Identificacion": {
+                "title": "Root Type for Identificacion",
+                "description": "Identificacion del Cliente",
+                "type": "object",
+                "properties": {
+                    "TipoDocumento": {
+                        "description": "Tipo de Identificacion del Cliente",
+                        "type": "string"
+                    },
+                    "NumIdentificacion": {
+                        "description": "Numero de Identificacion del Cliente",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "TipoDocumento": "",
+                    "NumIdentificacion": ""
+                }
+            },
+            "TipoCliente": {
+                "title": "Root Type for TipoCliente",
+                "description": "Indica el Tipo de Cliente, Natural o Juridica",
+                "type": "object",
+                "properties": {
+                    "Codigo": {
+                        "type": "string"
+                    },
+                    "Nombre": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "Codigo": "",
+                    "Nombre": ""
+                }
+            },
+            "CategoriaAfiliacion": {
+                "title": "Root Type for CategoriaAfiliacion",
+                "description": "Consolidado de la Categoría. Es la menor categoría de las diferentes vinculaciones activas",
+                "type": "object",
+                "properties": {
+                    "Categoria": {
+                        "description": "Categoria de Afiliacion, A, B o C",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "Categoria": "C"
+                }
+            },
+            "EstadoAfiliacion": {
+                "title": "Root Type for EstadoAfiliacion",
+                "description": "Estado de Afiliación Consolidada. si al menos tiene una vinculación activa, el estado Afiliación es Activo.",
+                "type": "object",
+                "properties": {
+                    "Estado": {
+                        "description": "Estado de Afiliacion, Activo o Inactivo",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "Estado": "Activo"
+                }
+            }
+        },
+        "securitySchemes": {
+            "clientes_api_key": {
+                "type": "apiKey",
+                "name": "api_key",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "clientes_api_key": [
+            ]
+        }
+    ]
+}
